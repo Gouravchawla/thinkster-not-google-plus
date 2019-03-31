@@ -24,9 +24,10 @@
       getAuthenticatedAccount: getAuthenticatedAccount,
       isAuthenticated: isAuthenticated,
       login: login,
+      logout: logout,
       register: register,
       setAuthenticatedAccount: setAuthenticatedAccount,
-      unauthenticat: unauthenticate
+      unauthenticate: unauthenticate
     };
 
     return Authentication;
@@ -97,6 +98,35 @@
         console.error('Epic failure!');
       } // End of loginErrorFn
     } // End of login method
+
+    /**
+     * @name logout
+     * @desc Try to log the user out
+     * @returns {Promise}
+     * @memberOf thinkster.authentication.services.Authentication
+     */
+    function logout() {
+      return $http.post('/api/v1/auth/logout/')
+          .then(logoutSuccessFn, logoutErrorFn);
+
+      /**
+       * @name logoutSuccessFn
+       * @desc Unauthenticate and redirect to index with page reload
+       */
+      function logoutSuccessFn() {
+        Authentication.unauthenticate();
+
+        window.location = '/';
+      }
+
+      /**
+       * @name logoutErrorFn
+       * @desc Log "Epic failure!" to the console
+       */
+      function logoutErrorFn() {
+        console.error('Epic failure!');
+      }
+    } // End of logout function
 
     /**
      * @name getAuthenticatedAccount
